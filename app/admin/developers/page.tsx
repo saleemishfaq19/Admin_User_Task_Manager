@@ -2,7 +2,6 @@
 
 import { useDeveloper } from "@/app/components/conntext";
 import { useState } from "react";
-import { Developer } from "@/app/components/conntext";
 
 export default function AddDeveloper() {
   const { addDeveloper, developers } = useDeveloper();
@@ -67,7 +66,7 @@ export default function AddDeveloper() {
     }
 
     // Create developer object
-    const newDeveloper: Developer = {
+    const newDeveloper = {
       id: Date.now(),
       name: Name.trim(),
       email: Email.trim(),
