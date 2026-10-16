@@ -1,10 +1,11 @@
 "use client";
 
-import { useDeveloper } from "@/app/components/conntext"
+import { useDeveloper } from "@/app/components/conntext";
 import { useState } from "react";
+import { Developer } from "@/app/components/conntext";
 
 export default function AddDeveloper() {
-  const { addDeveloper,developers } = useDeveloper();
+  const { addDeveloper, developers } = useDeveloper();
 
   const [Name, setName] = useState<string>("");
   const [Role, setRole] = useState<string>("");
@@ -66,7 +67,7 @@ export default function AddDeveloper() {
     }
 
     // Create developer object
-    const newDeveloper = {
+    const newDeveloper: Developer = {
       id: Date.now(),
       name: Name.trim(),
       email: Email.trim(),
@@ -75,7 +76,6 @@ export default function AddDeveloper() {
       skills: Skills.trim(),
       experience: Experience.trim(),
       phone: Phone.trim(),
-      task: {},
     };
 
     // Add developer
@@ -88,8 +88,7 @@ export default function AddDeveloper() {
     clearForm();
   };
 
-
-  console.log(developers)
+  console.log(developers);
 
   return (
     <main className="min-h-screen bg-slate-950 text-white p-6 md:p-10">

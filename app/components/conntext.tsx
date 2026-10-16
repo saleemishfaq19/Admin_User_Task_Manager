@@ -1,4 +1,3 @@
-
 "use client";
 
 import {
@@ -11,6 +10,7 @@ import {
 
 type Priority = "medium" | "high" | "low" | "urgent";
 
+
 export type Developer = {
   id: number;
   name: string;
@@ -19,8 +19,8 @@ export type Developer = {
   role: string;
   skills: string;
   experience: string;
-  phone: number;
-  task: {
+  phone: string;
+  task?: {
     title: string;
     description: string;
     deadline: Date;
@@ -32,21 +32,14 @@ type DeveloperContextType = {
   developers: Developer[];
   addDeveloper: (developer: Developer) => void;
   deleteDeveloper: (id: number) => void;
-  updateDeveloperTask: (
-    id: number,
-    task: Developer["task"]
-  ) => void;
+  updateDeveloperTask: (id: number, task: Developer["task"]) => void;
 };
 
-const DeveloperContext = createContext<
-  DeveloperContextType | undefined
->(undefined);
+const DeveloperContext = createContext<DeveloperContextType | undefined>(
+  undefined,
+);
 
-export function DeveloperProvider({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export function DeveloperProvider({ children }: { children: ReactNode }) {
   const [developers, setDevelopers] = useState<Developer[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -70,10 +63,7 @@ export function DeveloperProvider({
   useEffect(() => {
     if (!isLoaded) return;
 
-    localStorage.setItem(
-      "developers",
-      JSON.stringify(developers)
-    );
+    localStorage.setItem("developers", JSON.stringify(developers));
   }, [developers, isLoaded]);
 
   // Add developer
@@ -83,22 +73,15 @@ export function DeveloperProvider({
 
   // Delete developer
   const deleteDeveloper = (id: number) => {
-    setDevelopers((prev) =>
-      prev.filter((developer) => developer.id !== id)
-    );
+    setDevelopers((prev) => prev.filter((developer) => developer.id !== id));
   };
 
   // Update developer task
-  const updateDeveloperTask = (
-    id: number,
-    task: Developer["task"]
-  ) => {
+  const updateDeveloperTask = (id: number, task: Developer["task"]) => {
     setDevelopers((prev) =>
       prev.map((developer) =>
-        developer.id === id
-          ? { ...developer, task }
-          : developer
-      )
+        developer.id === id ? { ...developer, task } : developer,
+      ),
     );
   };
 
@@ -120,9 +103,7 @@ export function useDeveloper() {
   const context = useContext(DeveloperContext);
 
   if (!context) {
-    throw new Error(
-      "useDeveloper must be used inside DeveloperProvider"
-    );
+    throw new Error("useDeveloper must be used inside DeveloperProvider");
   }
 
   return context;
