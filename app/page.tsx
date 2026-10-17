@@ -17,8 +17,8 @@ export default function LoginPage() {
     e.preventDefault();
 
     if (
-      username.trim().toLowerCase() === "saleem ishfaq" &&
-      password === "123salim"
+      username.trim().toLowerCase() === "saleemishfaq" &&
+      password === "12345"
     ) {
       setError("");
       router.push("/admin");
