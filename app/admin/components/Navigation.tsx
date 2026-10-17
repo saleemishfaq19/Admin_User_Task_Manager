@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   const navLinks = [
     {
@@ -27,28 +28,37 @@ function Navigation() {
     },
   ];
 
+  // Logout Function
+  const handleLogout = () => {
+
+    setMenuOpen(false);
+    router.replace("/");
+  };
+
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
-        <div className="flex items-center gap-3">
+        <Link href="/admin" className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600">
             <span className="text-lg font-bold text-white">T</span>
           </div>
 
           <div>
             <h1 className="text-base font-bold text-white">TaskFlow</h1>
-
             <p className="hidden text-xs text-slate-500 sm:block">
               Admin Panel
             </p>
           </div>
-        </div>
+        </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden items-center gap-1 md:flex">
           {navLinks.map((link) => {
-            const isActive = pathname === link.href;
+            const isActive =
+              pathname === link.href ||
+              (link.href !== "/admin" &&
+                pathname.startsWith(`${link.href}/`));
 
             return (
               <Link
@@ -66,10 +76,11 @@ function Navigation() {
           })}
         </div>
 
-        {/* Right Side */}
+        {/* Desktop Right Side */}
         <div className="hidden items-center gap-4 md:flex">
           {/* Notification */}
           <button
+            type="button"
             className="relative flex h-10 w-10 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-800 hover:text-white"
             aria-label="Notifications"
           >
@@ -93,23 +104,33 @@ function Navigation() {
 
           {/* Profile */}
           <div className="flex items-center gap-3 border-l border-slate-800 pl-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-linear-to-br from-indigo-500 to-purple-600 font-semibold text-white">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 font-semibold text-white">
               A
             </div>
 
             <div className="hidden lg:block">
               <p className="text-sm font-medium text-white">Admin User</p>
-
               <p className="text-xs text-slate-500">Administrator</p>
             </div>
           </div>
+
+          {/* Logout */}
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="rounded-lg bg-red-500/10 px-4 py-2 text-sm font-medium text-red-400 transition hover:bg-red-500 hover:text-white"
+          >
+            Logout
+          </button>
         </div>
 
-        {/* Mobile Button */}
+        {/* Mobile Menu Button */}
         <button
+          type="button"
           onClick={() => setMenuOpen(!menuOpen)}
           className="flex h-10 w-10 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white md:hidden"
-          aria-label="Toggle menu"
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
         >
           {menuOpen ? (
             <svg
@@ -150,7 +171,10 @@ function Navigation() {
         <div className="border-t border-slate-800 bg-slate-950 px-4 py-4 md:hidden">
           <div className="space-y-1">
             {navLinks.map((link) => {
-              const isActive = pathname === link.href;
+              const isActive =
+                pathname === link.href ||
+                (link.href !== "/admin" &&
+                  pathname.startsWith(`${link.href}/`));
 
               return (
                 <Link
@@ -171,16 +195,24 @@ function Navigation() {
 
           {/* Mobile Profile */}
           <div className="mt-4 flex items-center gap-3 border-t border-slate-800 pt-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-linear-to-br from-indigo-500 to-purple-600 font-semibold text-white">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 font-semibold text-white">
               A
             </div>
 
             <div>
               <p className="text-sm font-medium text-white">Admin User</p>
-
               <p className="text-xs text-slate-500">Administrator</p>
             </div>
           </div>
+
+          {/* Mobile Logout */}
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="mt-4 w-full rounded-lg bg-red-500/10 px-4 py-3 text-left text-sm font-medium text-red-400 transition hover:bg-red-500 hover:text-white"
+          >
+            Logout
+          </button>
         </div>
       )}
     </nav>

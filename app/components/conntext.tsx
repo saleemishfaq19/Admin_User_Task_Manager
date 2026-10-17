@@ -10,7 +10,6 @@ import {
 
 type Priority = "medium" | "high" | "low" | "urgent";
 
-
 export type Developer = {
   id: number;
   name: string;
